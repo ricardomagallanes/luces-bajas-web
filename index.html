@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MotoLight - Alerta Inteligente de Luces Bajas en Ruta</title>
+  <meta name="description" content="Aplicación móvil preventiva para motociclistas y conductores. Alerta por voz en segundo plano para encender y apagar las luces reglamentarias en rutas de Córdoba y Argentina.">
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --accent: #f59e0b;
+      --accent-glow: rgba(245, 158, 11, 0.25);
+      --accent-blue: #3b82f6;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --success: #10b981;
+      --danger: #ef4444;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    /* Hero Section */
+    .hero {
+      position: relative;
+      padding: 70px 20px 50px;
+      text-align: center;
+      background: radial-gradient(circle at 50% 20%, rgba(245, 158, 11, 0.12) 0%, transparent 60%);
+      border-bottom: 1px solid var(--card-border);
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(245, 158, 11, 0.15);
+      color: var(--accent);
+      padding: 6px 14px;
+      border-radius: 9999px;
+      font-size: 0.85rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 20px;
+      border: 1px solid rgba(245, 158, 11, 0.3);
+    }
+    .hero-logo {
+      width: 88px;
+      height: 88px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+      box-shadow: 0 10px 25px var(--accent-glow);
+    }
+    .hero h1 {
+      font-size: 2.75rem;
+      font-weight: 900;
+      letter-spacing: -0.03em;
+      margin-bottom: 16px;
+      background: linear-gradient(135deg, #ffffff 40%, #f59e0b 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .hero p {
+      max-width: 650px;
+      margin: 0 auto 28px;
+      font-size: 1.15rem;
+      color: var(--text-muted);
+    }
+    .hero-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 12px 24px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 0.95rem;
+      text-decoration: none;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--accent);
+      color: #000;
+      box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+    }
+    .btn-primary:hover {
+      background: #fbbf24;
+      transform: translateY(-2px);
+    }
+    .btn-secondary {
+      background: var(--card-bg);
+      color: var(--text);
+      border: 1px solid var(--card-border);
+    }
+    .btn-secondary:hover {
+      background: #1f2937;
+      border-color: #374151;
+      transform: translateY(-2px);
+    }
+
+    /* Container */
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      padding: 50px 20px;
+    }
+
+    /* Grid Features */
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 24px;
+      margin-bottom: 50px;
+    }
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 28px;
+      transition: transform 0.2s ease, border-color 0.2s ease;
+    }
+    .card:hover {
+      border-color: rgba(245, 158, 11, 0.4);
+      transform: translateY(-4px);
+    }
+    .card-icon {
+      font-size: 2rem;
+      margin-bottom: 14px;
+      display: inline-block;
+    }
+    .card h3 {
+      font-size: 1.25rem;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Interactive Demo / Showcase */
+    .showcase {
+      background: linear-gradient(180deg, #111827 0%, #0d121d 100%);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 36px;
+      margin-bottom: 50px;
+    }
+    .showcase-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .showcase-header h2 {
+      font-size: 1.85rem;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .mock-screen {
+      background: #0b0f19;
+      border: 1px solid #1f2937;
+      border-radius: 16px;
+      padding: 24px;
+      max-width: 480px;
+      margin: 0 auto;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.4);
+    }
+    .mock-status {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #1f2937;
+      padding-bottom: 14px;
+      margin-bottom: 16px;
+    }
+    .mock-status .status-tag {
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+    .mock-alert {
+      background: rgba(245, 158, 11, 0.1);
+      border-left: 4px solid var(--accent);
+      padding: 14px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+    }
+    .mock-alert p {
+      font-weight: 600;
+      color: #fde68a;
+      font-size: 0.95rem;
+    }
+    .mock-phrase {
+      background: #111827;
+      padding: 14px;
+      border-radius: 8px;
+      font-style: italic;
+      color: #e5e7eb;
+      font-size: 0.9rem;
+      border: 1px dashed #374151;
+    }
+
+    /* Video & Demostration Section */
+    .video-section {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 36px;
+      margin-bottom: 50px;
+      text-align: center;
+    }
+    .video-section h2 {
+      font-size: 1.8rem;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .video-section p {
+      max-width: 650px;
+      margin: 0 auto 24px;
+      color: var(--text-muted);
+    }
+    .video-wrapper {
+      max-width: 720px;
+      margin: 0 auto;
+      background: #000;
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--card-border);
+      aspect-ratio: 16/9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+    }
+    .video-placeholder {
+      padding: 20px;
+      color: var(--text-muted);
+    }
+    .video-placeholder svg {
+      width: 64px;
+      height: 64px;
+      fill: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    /* Steps Section */
+    .steps {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+      gap: 20px;
+      margin-bottom: 50px;
+    }
+    .step-item {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 22px;
+      position: relative;
+    }
+    .step-num {
+      width: 32px;
+      height: 32px;
+      background: var(--accent);
+      color: #000;
+      font-weight: 800;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 14px;
+    }
+    .step-item h4 {
+      font-size: 1.1rem;
+      color: #fff;
+      margin-bottom: 6px;
+    }
+    .step-item p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--card-border);
+      padding: 36px 20px;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+    .footer-links {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .footer-links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-weight: 600;
+    }
+    .footer-links a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hero Header -->
+  <header class="hero">
+    <div class="hero-badge">🛡️ Seguridad Vial Inteligente • Argentina</div>
+    <br>
+    <img src="assets/logo.png" alt="MotoLight Logo" class="hero-logo">
+    <h1>MotoLight</h1>
+    <p>
+      El copiloto por voz para motociclistas y automovilistas. Te avisa <strong>antes de ingresar a una ruta</strong> para que prendas las luces reglamentarias y no te cobren multas innecesarias.
+    </p>
+    <div class="hero-buttons">
+      <a href="https://github.com/ricardomagallanes/MotoLight/releases" class="btn btn-primary" target="_blank">
+        Descargar APK para Android
+      </a>
+      <a href="license.html" class="btn btn-secondary">
+        Términos y Licencia
+      </a>
+      <a href="privacy.html" class="btn btn-secondary">
+        Política de Privacidad
+      </a>
+    </div>
+  </header>
+
+  <main class="container">
+
+    <!-- 4 Pasos de Funcionamiento -->
+    <section style="margin-bottom: 48px;">
+      <h2 style="font-size: 1.8rem; text-align: center; margin-bottom: 8px; color: #fff;">¿Cómo funciona MotoLight?</h2>
+      <p style="text-align: center; color: var(--text-muted); margin-bottom: 30px;">Diseñado para funcionar 100% en segundo plano sin distraerte en la conducción.</p>
+      
+      <div class="steps">
+        <div class="step-item">
+          <div class="step-num">1</div>
+          <h4>Filtro de Velocidad</h4>
+          <p>Solo monitorea si superás los <strong>25 km/h</strong>. Si estás caminando, en una plaza o detenido, no gasta batería ni emite alertas falsas.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">2</div>
+          <h4>Proximidad a Rutas</h4>
+          <p>Calcula tu distancia a los polígonos de rutas provinciales y nacionales. Si estás a menos de <strong>500 metros</strong>, se prepara para avisarte.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">3</div>
+          <h4>Aviso por Voz (TTS)</h4>
+          <p>Emite la advertencia hablada por los auriculares Bluetooth del casco o el altavoz del celular, incluso con la pantalla apagada.</p>
+        </div>
+        <div class="step-item">
+          <div class="step-num">4</div>
+          <h4>Salida de Ruta</h4>
+          <p>Al alejarte de la ruta y regresar a zona urbana, te avisa que ya podés apagar las luces bajas si tu vehículo lo requiere.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Simulación en Pantalla -->
+    <section class="showcase">
+      <div class="showcase-header">
+        <h2>Experiencia de Usuario y Tonadas Regionales</h2>
+        <p style="color: var(--text-muted);">Personalizá el tono de alerta entre Formal, Humorístico y el auténtico Cordobés.</p>
+      </div>
+      
+      <div class="mock-screen">
+        <div class="mock-status">
+          <span style="font-weight: 700; color: #fff;">ESTADO DEL MONITOREO</span>
+          <span class="status-tag">● ACTIVO EN 2° PLANO</span>
+        </div>
+        
+        <div style="margin-bottom: 14px; font-size: 0.9rem; color: var(--text-muted);">
+          <span>Velocidad actual: <strong style="color: #fff;">48 km/h</strong></span> • 
+          <span>Distancia a RN 20: <strong style="color: #f59e0b;">320 m</strong></span>
+        </div>
+
+        <div class="mock-alert">
+          <p>⚠️ ¡Alerta preventiva de ingreso a ruta emitida!</p>
+        </div>
+
+        <div class="mock-phrase">
+          <p style="font-size: 0.75rem; text-transform: uppercase; color: var(--accent); font-weight: 800; margin-bottom: 4px;">Modo de Voz: Cordobés Autóctono</p>
+          "¡Prendé la luz baja amigo antes que el gobernador te meta el manotazo!"
+        </div>
+      </div>
+    </section>
+
+    <!-- Características de Seguridad y Privacidad -->
+    <section class="grid">
+      <div class="card">
+        <span class="card-icon">⚡</span>
+        <h3>Bajo Consumo de Batería</h3>
+        <p>Utiliza geofencing inteligente y filtros cinemáticos para suspender el muestreo intensivo cuando el vehículo está detenido o fuera de velocidad de marcha.</p>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">🔒</span>
+        <h3>100% Privacidad Local</h3>
+        <p>Tus trayectos, coordenadas satelitales y velocidad jamás salen de tu celular. No hay servidores de seguimiento, no hay bases de datos en la nube.</p>
+      </div>
+
+      <div class="card">
+        <span class="card-icon">🎧</span>
+        <h3>Intercomunicadores Bluetooth</h3>
+        <p>Totalmente compatible con cascos de moto con Bluetooth (Cardo, Sena, intercoms universales) y estéreos de auto con Android Auto / Bluetooth.</p>
+      </div>
+    </section>
+
+    <!-- Sección Demostración / Video Requerido por Google Play -->
+    <section class="video-section">
+      <h2>Video Demostrativo y Justificación de Segundo Plano</h2>
+      <p>
+        De acuerdo con las directrices de Google Play para el uso del permiso <code>ACCESS_BACKGROUND_LOCATION</code>, este video explica cómo la app protege al usuario con la pantalla apagada.
+      </p>
+
+      <div class="video-wrapper">
+        <video controls style="width: 100%; height: 100%; object-fit: cover;" poster="assets/logo.png">
+          <source src="assets/demo.mp4" type="video/mp4">
+          Tu navegador no soporta reproducción de video.
+        </video>
+      </div>
+      <p style="margin-top: 16px; font-size: 0.85rem; color: var(--text-muted);">
+        * Grabación de pantalla del servicio nativo en segundo plano y disparador de alertas por voz.
+      </p>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-links">
+      <a href="license.html">Acuerdo de Licencia y Exención</a>
+      <a href="privacy.html">Política de Privacidad</a>
+      <a href="https://github.com/ricardomagallanes/MotoLight" target="_blank">Código Fuente en GitHub</a>
+    </div>
+    <p>© 2026 MotoLight Open Source. Desarrollado con ❤️ para la seguridad vial de los motociclistas.</p>
+    <p style="margin-top: 8px; font-size: 0.8rem; color: #6b7280;">El encendido de las luces bajas reglamentarias es responsabilidad exclusiva del conductor.</p>
+  </footer>
+
+</body>
+</html>

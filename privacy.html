@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Política de Privacidad - MotoLight</title>
+  <link rel="icon" type="image/png" href="assets/logo.png">
+  <style>
+    :root {
+      --bg: #090d16;
+      --card-bg: #111827;
+      --card-border: #1f2937;
+      --accent: #f59e0b;
+      --text: #f3f4f6;
+      --text-muted: #9ca3af;
+      --success: #10b981;
+    }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      padding: 20px;
+    }
+    .container {
+      max-width: 850px;
+      margin: 0 auto;
+      padding: 40px 24px;
+    }
+    header {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      margin-bottom: 32px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 24px;
+    }
+    header img {
+      width: 56px;
+      height: 56px;
+      border-radius: 12px;
+    }
+    header h1 {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #fff;
+    }
+    .badge {
+      display: inline-block;
+      background: rgba(16, 185, 129, 0.15);
+      color: var(--success);
+      padding: 4px 10px;
+      border-radius: 9999px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .nav-links {
+      display: flex;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .nav-links a {
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+    }
+    .nav-links a:hover {
+      text-decoration: underline;
+    }
+    .section {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 24px;
+      margin-bottom: 20px;
+    }
+    .section h2 {
+      font-size: 1.25rem;
+      color: #fff;
+      margin-bottom: 12px;
+    }
+    .section p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-bottom: 12px;
+    }
+    .section ul {
+      margin-left: 20px;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+    .section ul li {
+      margin-bottom: 8px;
+    }
+    strong {
+      color: #fff;
+    }
+    footer {
+      text-align: center;
+      margin-top: 48px;
+      padding-top: 24px;
+      border-top: 1px solid var(--card-border);
+      color: var(--text-muted);
+      font-size: 0.85rem;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="nav-links">
+      <a href="index.html">← Volver al sitio principal</a>
+      <a href="license.html">Ver Términos y Licencia →</a>
+    </div>
+
+    <header>
+      <img src="assets/logo.png" alt="MotoLight Logo">
+      <div>
+        <h1>Política de Privacidad</h1>
+        <span class="badge">Google Play Compliance • Cero Rastreo en la Nube</span>
+      </div>
+    </header>
+
+    <div class="section">
+      <h2>1. Introducción y Compromiso de Privacidad</h2>
+      <p>
+        <strong>MotoLight</strong> ("la Aplicación") ha sido diseñada bajo el principio de <em>Privacidad por Diseño</em> (Privacy by Design). Su objetivo principal es alertar al conductor y motociclista sobre la proximidad de rutas nacionales o provinciales para encender y apagar oportunamente las luces bajas reglamentarias.
+      </p>
+      <p>
+        Esta política explica formalmente el uso de datos en cumplimiento con las directrices de desarrollador de Google Play Store.
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>2. Recopilación y Uso de Datos de Ubicación (GPS)</h2>
+      <p>
+        MotoLight requiere acceso a la <strong>Ubicación precisa (`ACCESS_FINE_LOCATION`)</strong> y a la <strong>Ubicación en segundo plano (`ACCESS_BACKGROUND_LOCATION`)</strong>:
+      </p>
+      <ul>
+        <li><strong>Propósito fundamental:</strong> La aplicación debe calcular en tiempo real si el vehículo está en marcha (velocidad superior a 25 km/h) y si se encuentra a menos de 500 metros de un tramo de ruta regulado.</li>
+        <li><strong>Uso en segundo plano:</strong> Dado que el conductor lleva el dispositivo en el bolsillo, mochila o con la pantalla bloqueada mientras conduce una motocicleta o automóvil, el servicio nativo (`MotoLinkService`) necesita evaluar la posición de manera continua para emitir la advertencia sonora y por voz con la debida anticipación.</li>
+        <li><strong>Almacenamiento y Transmisión:</strong> <strong>NINGÚN dato de ubicación geográfica es transmitido a servidores remotos, grabado en bases de datos externas ni compartido con empresas publicitarias o terceros.</strong> Toda la comparación matemática de coordenadas se realiza estrictamente en la memoria RAM local del teléfono.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>3. Otros Permisos del Dispositivo</h2>
+      <ul>
+        <li><strong>Servicio en Primer Plano (`FOREGROUND_SERVICE`):</strong> Permite mostrar una notificación persistente activa para que el usuario siempre sepa cuándo el monitoreo está funcionando y pueda pausarlo con un toque.</li>
+        <li><strong>Sin restricciones de batería (`REQUEST_IGNORE_BATTERY_OPTIMIZATIONS`):</strong> Esencial para evitar que las capas de personalización del fabricante detengan el rastreo en medio de un viaje.</li>
+        <li><strong>Sintetizador de voz (TTS):</strong> Utiliza el motor nativo del dispositivo (Google TTS o del fabricante) para pronunciar las frases sin necesidad de internet.</li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <h2>4. Servicios de Terceros y Analíticas</h2>
+      <p>
+        MotoLight <strong>NO incluye SDKs de rastreo publicitario, analíticas invasivas ni perfilado de usuarios</strong>. La aplicación funciona de manera autónoma y desconectada (offline-first).
+      </p>
+    </div>
+
+    <div class="section">
+      <h2>5. Contacto</h2>
+      <p>
+        Para consultas respecto a esta política de privacidad o al funcionamiento de la aplicación, puede contactar al desarrollador a través del repositorio de GitHub: <a href="https://github.com/ricardomagallanes/MotoLight" target="_blank" style="color: var(--accent);">github.com/ricardomagallanes/MotoLight</a>.
+      </p>
+    </div>
+
+    <footer>
+      <p>© 2026 MotoLight Open Source. Todos los derechos reservados.</p>
+      <p><a href="license.html" style="color: var(--accent);">Licencia y Exención</a> • <a href="index.html" style="color: var(--accent);">Inicio</a></p>
+    </footer>
+  </div>
+</body>
+</html>
